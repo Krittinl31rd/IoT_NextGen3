@@ -1,0 +1,26 @@
+
+////////////////////////////////////////////////////////////////
+curl -O https://slproweb.com/download/Win64OpenSSL-3_1_3.msi
+
+msiexec /i Win64OpenSSL-3_1_3.msi /quiet /norestart
+
+setx PATH "%PATH%;C:\Program Files\OpenSSL-Win64\bin"
+
+openssl version
+////////////////////////////////////////////////////////////////
+
+$pwd = ConvertTo-SecureString -String "Archi123456" -Force -AsPlainText
+Export-PfxCertificate -Cert $cert -FilePath C:\output\certificate.pfx -Password $pwd
+
+
+
+
+openssl pkcs12 -in "C:\output\certificate.pfx" -out cert.pem -clcerts -nokeys
+openssl pkcs12 -in "C:\output\certificate.pfx" -out key.pem -nocerts -nodes
+
+
+
+/*
+openssl pkcs12 -in "C:\output\certificate.pfx" -out "C:\path\to\cert.pem" -clcerts -nokeys
+openssl pkcs12 -in "C:\output\certificate.pfx" -out "C:\path\to\key.pem" -nocerts -nodes
+*/

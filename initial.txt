@@ -1,0 +1,46 @@
+npm init
+npm install express
+npm install express-generator -g
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+express -e //for set view as ejs
+
+#IF Error
+[Use powershell]
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+
+/*
+  Usage: express [options] [dir]
+
+  Options:
+
+    -h, --help          output usage information
+        --version       output the version number
+    -e, --ejs           add ejs engine support
+        --hbs           add handlebars engine support
+        --pug           add pug engine support
+    -H, --hogan         add hogan.js engine support
+        --no-view       generate without view engine
+    -v, --view <engine> add view <engine> support (ejs|hbs|hjs|jade|pug|twig|vash) (defaults to jade)
+    -c, --css <engine>  add stylesheet <engine> support (less|stylus|compass|sass) (defaults to plain css)
+        --git           add .gitignore
+    -f, --force         force on non-empty directory
+*/
+express --view=ejs
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+npm install
+npm install -g nodemon
+
+[package.json]
+"scripts": {
+    "start": "nodemon ./bin/www"
+}
+
+set DEBUG=NodeIoTServer:*
+
+///////////////////////////////////////////////////////////////////////////////
+wss
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+openssl req -x509 -newkey rsa:2048 -nodes -sha256 -subj '/CN=127.0.0.1' \-keyout server.key -out server.crt

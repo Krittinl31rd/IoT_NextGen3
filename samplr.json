@@ -1,0 +1,424 @@
+{
+    "Success": true,
+    "Message": "",
+    "Member": {
+        "1058": {
+            "Status": 0,
+            "Img": "2",
+            "Name": "KONCISE",
+            "DeviceType": 2,
+            "Room": {
+                "1": {
+                    "Name": "Hilton",
+                    "Icon": 0
+                }
+            },
+            "Device": {
+                "3001": {
+                    "DeviceStyleID": 4,
+                    "DeviceName": "Light 1",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "online",
+                            "Value": 1.0
+                        },
+                        "1": {
+                            "ControlType": 0,
+                            "Label": "status",
+                            "Value": 1.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "3002": {
+                    "DeviceStyleID": 4,
+                    "DeviceName": "Light 2",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "online",
+                            "Value": 1.0
+                        },
+                        "1": {
+                            "ControlType": 0,
+                            "Label": "status",
+                            "Value": 1.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "3003": {
+                    "DeviceStyleID": 4,
+                    "DeviceName": "Cove",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "online",
+                            "Value": 1.0
+                        },
+                        "1": {
+                            "ControlType": 0,
+                            "Label": "status",
+                            "Value": 1.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "3007": {
+                    "DeviceStyleID": 4,
+                    "DeviceName": "Entrance",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "online",
+                            "Value": 1.0
+                        },
+                        "1": {
+                            "ControlType": 0,
+                            "Label": "status",
+                            "Value": 1.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "5001": {
+                    "DeviceStyleID": 10,
+                    "DeviceName": "Master on",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "enable",
+                            "Value": 1.0
+                        },
+                        "1": {
+                            "ControlType": 1,
+                            "Label": "master",
+                            "Value": 1.0
+                        },
+                        "2": {
+                            "ControlType": 1,
+                            "Label": "status",
+                            "Value": 1.0
+                        },
+                        "3": {
+                            "ControlType": 1,
+                            "Label": "icon",
+                            "Value": 1.0
+                        },
+                        "4": {
+                            "ControlType": 1,
+                            "Label": "type",
+                            "Value": 1.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "5002": {
+                    "DeviceStyleID": 10,
+                    "DeviceName": "Master off",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "enable",
+                            "Value": 1.0
+                        },
+                        "1": {
+                            "ControlType": 1,
+                            "Label": "master",
+                            "Value": 1.0
+                        },
+                        "2": {
+                            "ControlType": 1,
+                            "Label": "status",
+                            "Value": 0.0
+                        },
+                        "3": {
+                            "ControlType": 1,
+                            "Label": "icon",
+                            "Value": 1.0
+                        },
+                        "4": {
+                            "ControlType": 1,
+                            "Label": "type",
+                            "Value": 1.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "7000": {
+                    "DeviceStyleID": 20,
+                    "DeviceName": "Power",
+                    "RoomID": 0,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "online",
+                            "Value": 1.0
+                        },
+                        "1": {
+                            "ControlType": 1,
+                            "Label": "voltage",
+                            "Value": 2286.0
+                        },
+                        "2": {
+                            "ControlType": 1,
+                            "Label": "current",
+                            "Value": 7138.0
+                        },
+                        "3": {
+                            "ControlType": 1,
+                            "Label": "power",
+                            "Value": 11117.0
+                        },
+                        "4": {
+                            "ControlType": 1,
+                            "Label": "power facture",
+                            "Value": 68.0
+                        },
+                        "5": {
+                            "ControlType": 1,
+                            "Label": "energy",
+                            "Value": 11973.0
+                        },
+                        "6": {
+                            "ControlType": 1,
+                            "Label": "frequency",
+                            "Value": 500.0
+                        }
+                    }
+                },
+                "30000": {
+                    "DeviceStyleID": 100,
+                    "DeviceName": "Hilton",
+                    "RoomID": 0,
+                    "Control": {
+                        "1": {
+                            "ControlType": 1,
+                            "Label": "Hilton",
+                            "Value": 0.0
+                        }
+                    }
+                }
+            }
+        },
+        "1064": {
+            "Status": 0,
+            "Img": "3",
+            "Name": "Grand Mercure",
+            "DeviceType": 2,
+            "Room": {
+                "1": {
+                    "Name": "Meeting Room",
+                    "Icon": 5
+                }
+            },
+            "Device": {
+                "3001": {
+                    "DeviceStyleID": 4,
+                    "DeviceName": "Lighting 1",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "online",
+                            "Value": 0.0
+                        },
+                        "1": {
+                            "ControlType": 0,
+                            "Label": "status",
+                            "Value": 0.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "3002": {
+                    "DeviceStyleID": 4,
+                    "DeviceName": "Lighting 2",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "online",
+                            "Value": 0.0
+                        },
+                        "1": {
+                            "ControlType": 0,
+                            "Label": "status",
+                            "Value": 0.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "3003": {
+                    "DeviceStyleID": 4,
+                    "DeviceName": "Cove",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "online",
+                            "Value": 0.0
+                        },
+                        "1": {
+                            "ControlType": 0,
+                            "Label": "status",
+                            "Value": 0.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "3007": {
+                    "DeviceStyleID": 4,
+                    "DeviceName": "Entrance",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "online",
+                            "Value": 0.0
+                        },
+                        "1": {
+                            "ControlType": 0,
+                            "Label": "status",
+                            "Value": 0.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "5001": {
+                    "DeviceStyleID": 10,
+                    "DeviceName": "Master on",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "enable",
+                            "Value": 1.0
+                        },
+                        "1": {
+                            "ControlType": 1,
+                            "Label": "master",
+                            "Value": 1.0
+                        },
+                        "2": {
+                            "ControlType": 1,
+                            "Label": "status",
+                            "Value": 1.0
+                        },
+                        "3": {
+                            "ControlType": 1,
+                            "Label": "icon",
+                            "Value": 1.0
+                        },
+                        "4": {
+                            "ControlType": 1,
+                            "Label": "type",
+                            "Value": 1.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "5002": {
+                    "DeviceStyleID": 10,
+                    "DeviceName": "Master off",
+                    "RoomID": 1,
+                    "Control": {
+                        "0": {
+                            "ControlType": 0,
+                            "Label": "enable",
+                            "Value": 1.0
+                        },
+                        "1": {
+                            "ControlType": 1,
+                            "Label": "master",
+                            "Value": 1.0
+                        },
+                        "2": {
+                            "ControlType": 1,
+                            "Label": "status",
+                            "Value": 0.0
+                        },
+                        "3": {
+                            "ControlType": 1,
+                            "Label": "icon",
+                            "Value": 1.0
+                        },
+                        "4": {
+                            "ControlType": 1,
+                            "Label": "type",
+                            "Value": 1.0
+                        },
+                        "100": {
+                            "ControlType": 1,
+                            "Label": "room",
+                            "Value": 1.0
+                        }
+                    }
+                },
+                "30000": {
+                    "DeviceStyleID": 100,
+                    "DeviceName": "Hilton",
+                    "RoomID": 0,
+                    "Control": {
+                        "1": {
+                            "ControlType": 1,
+                            "Label": "Meeting Room",
+                            "Value": 5.0
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

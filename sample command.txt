@@ -1,0 +1,47 @@
+{"cmd":1,"param":{"Username":"","Password":"","Token":"2343.5155dkzap9b2BQ42SR6f775famSMU9tk8hfEo0897PqaD6ZoL1W243927q5a3ox8"}}
+{"cmd":1,"param":{"Username":"","Password":"","Token":"3.3q3z710pYyA8E7EYfE3KW5E41b4Yd7aRK6449j2aSBOTKtm5J8715WPP6a195712"}}
+{"cmd":31,"param":{"Device":7101,"Ctrl":1,"V":0,"R":0}}
+{"cmd":1,"param":{"Username":"ham","Password":"123456"}}
+{"cmd":3,"param":{"Member":3,"Device":3001,"Ctrl":1,"V":0}}
+{"cmd":32,"param":{}}
+{"cmd":3,"param":{"Member":5,"Device":3001,"Ctrl":1,"V":1,"R":0}}
+
+
+[
+[1]   {
+[1]     id: '4cbb610a-287c-499c-ba32-07ca035c17c0',
+[1]     lastTimestamp: 1736923802128,
+[1]     socket: WebSocket {
+[1]       _events: [Object: null prototype],
+[1]       _eventsCount: 3,
+[1]       _maxListeners: undefined,
+[1]       _binaryType: 'nodebuffer',
+[1]       _closeCode: 1006,
+[1]       _closeFrameReceived: false,
+[1]       _closeFrameSent: false,
+[1]       _closeMessage: <Buffer >,
+[1]       _closeTimer: null,
+[1]       _errorEmitted: false,
+[1]       _extensions: {},
+[1]       _paused: false,
+[1]       _protocol: '',
+[1]       _readyState: 1,
+[1]       _receiver: [Receiver],
+[1]       _sender: [Sender],
+[1]       _socket: [Socket],
+[1]       _autoPong: true,
+[1]       _isServer: true,
+[1]       [Symbol(shapeMode)]: false,
+[1]       [Symbol(kCapture)]: false
+[1]     },
+[1]     info: { id: 3, name: 'Showroom', role: 2, friend: [] },
+[1]     islogin: true
+[1]   },
+[1]   {
+[1]     id: 'e1edc359-022e-4e39-9c06-3c5bc47abcad',
+[1]     lastTimestamp: 1736923808930,
+[1]     socket: WebSocket,
+[1]     info: { id: 2, name: 'NottingHam Smith Ally', role: 1, friend: [] },
+[1]     islogin: true
+[1]   }
+[1] ]
