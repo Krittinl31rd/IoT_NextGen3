@@ -969,6 +969,7 @@ wss.on("connection", function connection(ws, req) {
                 env: { temp: jpayload.c11, humid: 0 },
                 created_at: d.toISOString().slice(0, 23).replace("T", " "),
               };
+
               let getf = getMyfriend(csock);
 
               if (getf != undefined) {
@@ -2256,7 +2257,9 @@ tcpserver.on("connection", function (sock) {
                     site_id: payload_detail.site_id,
                   }
                 );
-
+                console.log(
+                  `> [Logs] Insert Logs [${csock.info.id}] : Device - ${jpayload.device_id}`
+                );
                 let p = {
                   log_type: "log",
                   gateway_id: csock.info.id,
@@ -3547,7 +3550,7 @@ function sendPacket(_cmd, _payload) {
   });
   console.log(bb);*/
 
-  //console.log(`send packet:${_cmd}, ${buff.length}`);
+  console.log(`send packet ::::::::::::::::::::${_cmd}, ${buff.length}`);
   return Buffer.from(buff);
 }
 
