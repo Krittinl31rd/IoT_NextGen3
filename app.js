@@ -1314,55 +1314,55 @@ wss.on("connection", function connection(ws, req) {
                 ctrlid: jpayload.Ctrl,
               }
             );
-            if (
-              jpayload.Device >= 2000 &&
-              jpayload.Device <= 2999 &&
-              (jpayload.Ctrl === 1 || jpayload.Ctrl === 2)
-            ) {
-              const isGateway = await excutes(
-                `SELECT lc.site_id, lg.id AS gateway_id, lg.gateway_name 
-                  FROM Lamp_Gateways lg
-                  JOIN Lamp_Contracts lc ON lg.contract_id = lc.id
-                  WHERE lg.id = :gateway_id`,
-                {
-                  gateway_id: csock.info.id,
-                }
-              );
+            // if (
+            //   jpayload.Device >= 2000 &&
+            //   jpayload.Device <= 2999 &&
+            //   (jpayload.Ctrl === 1 || jpayload.Ctrl === 2)
+            // ) {
+            //   const isGateway = await excutes(
+            //     `SELECT lc.site_id, lg.id AS gateway_id, lg.gateway_name
+            //       FROM Lamp_Gateways lg
+            //       JOIN Lamp_Contracts lc ON lg.contract_id = lc.id
+            //       WHERE lg.id = :gateway_id`,
+            //     {
+            //       gateway_id: csock.info.id,
+            //     }
+            //   );
 
-              if (isGateway.response[0].length > 0) {
-                const payload_usage = {
-                  type: "usage",
-                  detail: JSON.stringify([
-                    {
-                      gateway_id: csock.info.id,
-                      device_id: jpayload.Device,
-                      control_id: jpayload.Ctrl,
-                      V: jpayload.V,
-                    },
-                  ]),
-                  control_by: csock.info.id,
-                  site_id: isGateway.response[0][0].site_id,
-                };
-                // console.log(payload_usage);
-                const d = new Date();
-                const updatedLogs = await excutes(
-                  `INSERT INTO Lamp_Log (type, detail, control_by, created_at, site_id)
-                   VALUES (:type, :detail, :control_by, :created_at, :site_id)`,
-                  {
-                    type: payload_usage.type,
-                    detail: payload_usage.detail,
-                    control_by: payload_usage.control_by,
-                    created_at: d.toISOString().slice(0, 23).replace("T", " "),
-                    site_id: payload_usage.site_id,
-                  }
-                );
-                console.log(
-                  `> [DeviceUpdateValue] Insert Log ${[
-                    csock.info.id,
-                  ]} : ${JSON.stringify(jpayload)}`
-                );
-              }
-            }
+            //   if (isGateway.response[0].length > 0) {
+            //     const payload_usage = {
+            //       type: "usage",
+            //       detail: JSON.stringify([
+            //         {
+            //           gateway_id: csock.info.id,
+            //           device_id: jpayload.Device,
+            //           control_id: jpayload.Ctrl,
+            //           V: jpayload.V,
+            //         },
+            //       ]),
+            //       control_by: csock.info.id,
+            //       site_id: isGateway.response[0][0].site_id,
+            //     };
+            //     // console.log(payload_usage);
+            //     const d = new Date();
+            //     const updatedLogs = await excutes(
+            //       `INSERT INTO Lamp_Log (type, detail, control_by, created_at, site_id)
+            //        VALUES (:type, :detail, :control_by, :created_at, :site_id)`,
+            //       {
+            //         type: payload_usage.type,
+            //         detail: payload_usage.detail,
+            //         control_by: payload_usage.control_by,
+            //         created_at: d.toISOString().slice(0, 23).replace("T", " "),
+            //         site_id: payload_usage.site_id,
+            //       }
+            //     );
+            //     console.log(
+            //       `> [DeviceUpdateValue] Insert Log ${[
+            //         csock.info.id,
+            //       ]} : ${JSON.stringify(jpayload)}`
+            //     );
+            //   }
+            // }
           })();
 
           //const myFriend = getFriendOnline(csock);
