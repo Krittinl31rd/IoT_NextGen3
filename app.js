@@ -94,21 +94,21 @@ WebSocketAdminManager.on("messageReceived", (message) => {
 });
 WebSocketAdminManager.initialize(wsadminserver);
 
-wsadminserver.listen(
-  process.env.WS_ADMIN_PORT || 1010,
-  process.env.WS_ADMIN_HOST,
-  () => {
-    let sc = process.env.SECURE == "true" ? "wss" : "ws";
-    let host =
-      process.env.WS_ADMIN_HOST == "127.0.0.1"
-        ? "localhost"
-        : process.env.WS_ADMIN_HOST;
+// wsadminserver.listen(
+//   process.env.WS_ADMIN_PORT || 1010,
+//   process.env.WS_ADMIN_HOST,
+//   () => {
+//     let sc = process.env.SECURE == "true" ? "wss" : "ws";
+//     let host =
+//       process.env.WS_ADMIN_HOST == "127.0.0.1"
+//         ? "localhost"
+//         : process.env.WS_ADMIN_HOST;
 
-    console.log(
-      `[ADMIN]\tServer running at ${sc}://${host}:${process.env.WS_ADMIN_PORT}${process.env.WS_ADMIN_PATH}`
-    );
-  }
-);
+//     console.log(
+//       `[ADMIN]\tServer running at ${sc}://${host}:${process.env.WS_ADMIN_PORT}${process.env.WS_ADMIN_PATH}`
+//     );
+//   }
+// );
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
