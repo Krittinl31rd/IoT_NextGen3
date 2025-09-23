@@ -3515,7 +3515,7 @@ function verifyPacket(_packet) {
 }
 
 function sendPacket(_cmd, _payload) {
-  // console.log(_cmd, _payload);
+  // console.log(`sendPacket::::::::::::::::: ${(_cmd, _payload)}`);
   //Payload
   const buffer = Buffer.from(_payload, "utf-8");
   let len = buffer.length + 2;
@@ -3550,7 +3550,7 @@ function sendPacket(_cmd, _payload) {
   });
   console.log(bb);*/
 
-  console.log(`send packet ::::::::::::::::::::${_cmd}, ${buff.length}`);
+  // console.log(`send packet ::::::::::::::::::::${_cmd}, ${buff.length}`);
   return Buffer.from(buff);
 }
 
