@@ -931,7 +931,7 @@ wss.on("connection", function connection(ws, req) {
                 type: "log",
                 detail: JSON.stringify([detail]),
                 control_by: csock.info.id,
-                site_id: isGateway?.site_id,
+                site_id: isGateway.response[0][0].site_id,
               };
               const d = new Date();
               await excutes(
@@ -2243,7 +2243,7 @@ tcpserver.on("connection", function (sock) {
                   type: "log",
                   detail: JSON.stringify([detail]),
                   control_by: csock.info.id,
-                  site_id: isGateway?.site_id,
+                  site_id: isGateway.response[0][0].site_id,
                 };
                 const d = new Date();
                 await excutes(
