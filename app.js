@@ -1617,9 +1617,7 @@ wss.on("connection", function connection(ws, req) {
               let p = {
                 cmd: command.GetOverviews,
                 param: {
-                  Success: true,
-                  Message: "",
-                  Overviews: summary,
+                  summary,
                 },
               };
               csock.socket.send(JSON.stringify(p));
