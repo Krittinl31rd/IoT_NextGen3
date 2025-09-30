@@ -228,12 +228,14 @@ wss.on("connection", function connection(ws, req) {
           (async () => {
             try {
               // Perform the query
+              // console.log(jpayload);
               const member = await Member.findOne({
                 where: {
                   Username: jpayload.Username, // Condition to match the Username field
                 },
               });
               // Handle the case where no member is found
+              console.log(":::::::::::::::::::::::::::::" + member);
               if (member) {
                 bcrypt.compare(
                   jpayload.Password,
@@ -1430,6 +1432,7 @@ wss.on("connection", function connection(ws, req) {
               "SELECT Friends.MemberID as MemberID, Friends.Friend as Friend, Friends.FRID as FRID, Member.DeviceType as DeviceType, Member.MemberName as MemberName, Member.Img as Img FROM Friends inner join Member on Friends.Friend = Member.MemberID WHERE Friends.MemberID = :mid",
               { mid: csock.info.id }
             );
+            // console.log(memberResult?.response);
             if (memberResult.response.length > 0) {
               let memberPromises = memberResult.response.map(async (member) => {
                 let gwsock = sockets.find((x) => x.info.id == member.Friend);
@@ -1522,6 +1525,122 @@ wss.on("connection", function connection(ws, req) {
               csock.socket.send(JSON.stringify(p));
               console.log(
                 `> [GetFriendInformation] [${csock.info.id}] : Response 0 friend`
+              );
+            }
+          })();
+        }
+      } else if (response.cmd == command.GetOverviews) {
+        // get information
+        if (csock.islogin == false) {
+          //Reject command
+          let p = {
+            cmd: command.CommandReject,
+            param: {
+              Status: 0,
+              Message: "Command reject",
+            },
+          };
+          csock.timestamp = new Date();
+          WebSocketAdminManager.sendLog("reject", {
+            datestamp: csock.timestamp.toLocaleDateString(),
+            timestamp: csock.timestamp.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: false, // 24-hour format
+            }),
+            cmd: admincommand.GetOverviews,
+            message: `[WS]Reject ${clientIP}:${clientPort} because not login.`,
+          });
+          csock.socket.send(JSON.stringify(p));
+        } else {
+          console.log(`> [GetOverviews] [${csock.info.id}] : Request`);
+          let summary = {
+            totalGateway: 0,
+            onlineGateway: 0,
+            offlineGateway: 0,
+            totalDevice: 0,
+            onlineDevice: 0,
+            offlineDevice: 0,
+          };
+          (async () => {
+            // เอา memberid ไปเช็ค site_id และ เอา site_id ไป หา contreact_id เพื่อ เอาไปหา gateway อีกที
+            let siteResult = await querys(
+              `SELECT lmsm.site_id, lc.id AS contract_id, lg.id AS gateway_id
+                FROM Lamp_Member_Site_Mapping AS lmsm
+                INNER JOIN Lamp_Contracts AS lc ON lmsm.site_id = lc.site_id
+                INNER JOIN Lamp_Gateways AS lg ON lc.id = lg.contract_id
+                WHERE lmsm.member_id = :mid`,
+              { mid: jpayload.lamp_member_id }
+            );
+            // console.log(siteResult?.response);
+            if (siteResult.response.length > 0) {
+              let memberPromises = siteResult.response.map(async (member) => {
+                summary.totalGateway += 1;
+
+                let gwsock = sockets.find(
+                  (x) => x.info.id == member.gateway_id
+                );
+                let gwwssock = wsClient.find(
+                  (x) => x.info.id == member.gateway_id
+                );
+
+                summary.onlineGateway +=
+                  (gwsock != undefined && gwsock.islogin == true) ||
+                  (gwwssock != undefined && gwwssock.islogin == true)
+                    ? 1
+                    : 0;
+                summary.offlineGateway =
+                  summary.totalGateway - summary.onlineGateway;
+
+                let deviceResult = await querys(
+                  `SELECT dev.MemberID, dev.DeviceID, dev.DeviceStyleID, devc.ControlID, devc.LastValue
+                FROM Devices AS dev
+                INNER JOIN DevicetControl AS devc ON dev.MemberID = devc.MemberID AND dev.DeviceID = devc.DeviceID 
+                AND dev.DeviceStyleID = 3 AND devc.ControlID = 0
+                WHERE dev.MemberID = :mid`,
+                  { mid: member.gateway_id }
+                );
+                if (deviceResult.response.length > 0) {
+                  let devicePromises = deviceResult.response.map(
+                    async (device) => {
+                      summary.totalDevice += 1;
+                      summary.onlineDevice += device.LastValue == 1 ? 1 : 0;
+                      summary.offlineDevice =
+                        summary.totalDevice - summary.onlineDevice;
+                    }
+                  );
+                  await Promise.all(devicePromises);
+                }
+              });
+              await Promise.all(memberPromises);
+              let p = {
+                cmd: command.GetOverviews,
+                param: {
+                  Success: true,
+                  Message: "",
+                  Overviews: summary,
+                },
+              };
+              csock.socket.send(JSON.stringify(p));
+              console.log(
+                `> [GetOverviews] [${
+                  csock.info.id
+                }] : Response ${JSON.stringify(summary)}`
+              );
+            } else {
+              let p = {
+                cmd: command.GetOverviews,
+                param: {
+                  Success: true,
+                  Message: "Not site found",
+                },
+              };
+              csock.socket.send(JSON.stringify(p));
+              console.log(
+                `> [GetOverviews] [${
+                  csock.info.id
+                }] : Response ${JSON.stringify(summary)}`
               );
             }
           })();
@@ -1622,6 +1741,7 @@ const { default: Message } = require("tedious/lib/message");
 const { promises } = require("dns");
 const { DateTime } = require("mssql");
 const { admincommand } = require("./models/admincommon");
+const { json } = require("sequelize");
 const port = process.env.TCP_PORT;
 const host = "0.0.0.0";
 
@@ -1651,6 +1771,7 @@ tcpserver.on("connection", function (sock) {
       name: "",
       role: deviceType.Undefind,
       friend: [], //{MemberID, Role}
+      friendLamp: [],
     },
     islogin: false,
   };
@@ -1902,11 +2023,10 @@ tcpserver.on("connection", function (sock) {
                                 "SELECT * FROM Friends WHERE Friend = :fid",
                                 { fid: csock.info.MemberID }
                               );
-                              //console.log(memberResult);
                               if (friendResult.response.length > 0) {
                                 let friendPromises = friendResult.response.map(
                                   async (friend) => {
-                                    //console.log(friend);
+                                    console.log(friend);
                                     if (friend != undefined) {
                                       let fr = {
                                         memberID: friend.MemberID,
@@ -1928,6 +2048,7 @@ tcpserver.on("connection", function (sock) {
                                         p,
                                         friend.MemberID
                                       );
+
                                       //----------------------------------------------------------------------------------
                                     }
                                   }
@@ -2094,6 +2215,60 @@ tcpserver.on("connection", function (sock) {
                                       }
                                     );
                                   await Promise.all(friendPromises); // Wait for all friend queries
+                                }
+                                // ----------------- send to client is friend is site ----------------------------------
+                                let gatewayResult = await querys(
+                                  `SELECT lg.id AS gateway_id
+                                    FROM Lamp_Gateways AS lg
+                                    WHERE  lg.id = :mid`,
+                                  { mid: gwmem.MemberID }
+                                );
+                                if (gatewayResult.response.length > 0) {
+                                  let gatewayPromises =
+                                    gatewayResult.response.map(
+                                      async (gateway) => {
+                                        if (gateway != undefined) {
+                                          let friendLampResult = await querys(
+                                            "SELECT * FROM Friends WHERE Friend = :fid",
+                                            { fid: gateway.gateway_id }
+                                          );
+                                          if (
+                                            friendLampResult.response.length > 0
+                                          ) {
+                                            let friendPromisesLamp =
+                                              friendLampResult.response.map(
+                                                async (friend) => {
+                                                  //console.log(friend);
+                                                  if (friend != undefined) {
+                                                    let fr = {
+                                                      memberID: friend.MemberID,
+                                                      role: friend.FRID,
+                                                    };
+                                                    csock.info.friendLamp.push(
+                                                      fr
+                                                    );
+                                                    //Broadcast to friend user
+                                                    let p = {
+                                                      MemberID: gwmem.MemberID,
+                                                      Status: 1,
+                                                    };
+                                                    sendToMyFriend(
+                                                      command.UpdateOverviews,
+                                                      p,
+                                                      friend.MemberID
+                                                    );
+                                                    //----------------------------------------------------------------------------------
+                                                  }
+                                                }
+                                              );
+                                            await Promise.all(
+                                              friendPromisesLamp
+                                            );
+                                          }
+                                        }
+                                      }
+                                    );
+                                  await Promise.all(gatewayPromises);
                                 }
                               }
                               WebSocketAdminManager.clientUpdateInfo(
@@ -3149,6 +3324,15 @@ tcpserver.on("connection", function (sock) {
               sendToMyFriendWS(command.FriendStatus, p, frd);
             });
           }
+          let getfl = getMyfriendLamp(sockets[index]);
+          if (getf != undefined) {
+            getfl.tcp.forEach((frd) => {
+              sendToMyFriendTCP(command.UpdateOverviews, p, frd);
+            });
+            getfl.ws.forEach((frd) => {
+              sendToMyFriendWS(command.UpdateOverviews, p, frd);
+            });
+          }
         }
       } else {
         console.log(`> [Client] [${clientIP}:${clientPort}] Disconnected.`);
@@ -3255,6 +3439,27 @@ function getMyfriendID(_me) {
   return id;
 }
 
+function getMyfriendLamp(_me) {
+  let tcpFriend = [];
+  let wsFriend = [];
+  _me.info.friendLamp.forEach((fr) => {
+    let sc = sockets.filter((x) => x.info.id == fr.memberID);
+    if (sc != undefined) {
+      sc.forEach((s) => {
+        tcpFriend.push(s);
+      });
+    }
+    let wssc = wsClient.filter((x) => x.info.id == fr.memberID);
+    if (wssc != undefined) {
+      wssc.forEach((s) => {
+        wsFriend.push(s);
+      });
+    }
+  });
+
+  return { tcp: tcpFriend, ws: wsFriend };
+}
+
 function sendToMyFriendTCP(_cmd, _payload, _socket) {
   const report = sendPacket(_cmd, JSON.stringify(_payload));
   _socket.socket.write(report);
@@ -3291,6 +3496,8 @@ function sendToMyFriend(_cmd, _payload, _target) {
     });
   }
 }
+function sendToMySite(_cmd, payload) {}
+
 function verifyMultiPacket(_packet) {
   //console.log("_packet : ", _packet);
   let remainingBuffer = _packet;

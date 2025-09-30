@@ -20,6 +20,8 @@ const command = {
 
   Configuration: 301,
   Logs: 50, //50
+  GetOverviews: 999,
+  UpdateOverviews: 998,
 };
 
 const loginStatus = {
