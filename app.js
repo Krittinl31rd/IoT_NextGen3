@@ -2250,6 +2250,8 @@ tcpserver.on("connection", function (sock) {
                                                     //Broadcast to friend user
                                                     let p = {
                                                       MemberID: gwmem.MemberID,
+                                                      DeviceID: null,
+                                                      Type: "gateway",
                                                       Status: 1,
                                                     };
                                                     sendToMyFriend(
@@ -3129,18 +3131,7 @@ tcpserver.on("connection", function (sock) {
               V: jpayload.V,
               R: jpayload.R,
             };
-            /*getMyfriendID(csock).map((f) => {
-              sadsads =
-                f.tcp.forEach(ftcp => {
-                  sendToMyFriend(command.DeviceUpdateValue, p, ftcp.info.id);
-                });
-              f.ws.forEach(fws => {
-                sendToMyFriend(command.DeviceUpdateValue, p, fws.info.id);
-              });
-            });*/
-
             let getf = getMyfriend(csock);
-
             if (getf != undefined) {
               getf.tcp.forEach((frd) => {
                 sendToMyFriendTCP(command.DeviceUpdateValue, p, frd);
@@ -3149,6 +3140,32 @@ tcpserver.on("connection", function (sock) {
                 sendToMyFriendWS(command.DeviceUpdateValue, p, frd);
               });
             }
+
+            if (
+              jpayload.Device >= 2000 &&
+              jpayload.Device <= 2999 &&
+              jpayload.Ctrl == 0
+            ) {
+              let pl = {
+                MemberID: csock.info.id,
+                DeviceID: jpayload.Device,
+                Type: "Device",
+                Status: jpayload.V,
+              };
+              let getfl = getMyfriendLamp(csock);
+              let sendHistory = csock.sendHistory || [];
+              if (!isDuplicateSend(sendHistory, pl)) {
+                getfl.tcp.forEach((frd) => {
+                  sendToMyFriendTCP(command.UpdateOverviews, pl, frd);
+                });
+                getfl.ws.forEach((frd) => {
+                  sendToMyFriendWS(command.UpdateOverviews, pl, frd);
+                });
+                sendHistory.push(pl);
+                csock.sendHistory = sendHistory;
+              }
+            }
+
             csock.timestamp = new Date();
             WebSocketAdminManager.sendLog("control", {
               datestamp: csock.timestamp.toLocaleDateString(),
@@ -3324,14 +3341,24 @@ tcpserver.on("connection", function (sock) {
               sendToMyFriendWS(command.FriendStatus, p, frd);
             });
           }
+
+          let pl = {
+            MemberID: sockets[index].info.id,
+            DeviceID: null,
+            Type: "gateway",
+            Status: 0,
+          };
           let getfl = getMyfriendLamp(sockets[index]);
-          if (getf != undefined) {
+          let sendHistory = csock.sendHistory || [];
+          if (!isDuplicateSend(sendHistory, pl)) {
             getfl.tcp.forEach((frd) => {
-              sendToMyFriendTCP(command.UpdateOverviews, p, frd);
+              sendToMyFriendTCP(command.UpdateOverviews, pl, frd);
             });
             getfl.ws.forEach((frd) => {
-              sendToMyFriendWS(command.UpdateOverviews, p, frd);
+              sendToMyFriendWS(command.UpdateOverviews, pl, frd);
             });
+            sendHistory.push(pl);
+            sockets[index].sendHistory = sendHistory;
           }
         }
       } else {
@@ -3810,6 +3837,15 @@ function convert(input) {
   )}.${pad(date.getMilliseconds(), 3)}`;
 
   return formatted;
+}
+
+function isDuplicateSend(history, payload) {
+  return history.some(
+    (h) =>
+      h.MemberID == payload.MemberID &&
+      h.DeviceID == payload.DeviceID &&
+      h.Status == payload.Status
+  );
 }
 
 module.exports = app;
