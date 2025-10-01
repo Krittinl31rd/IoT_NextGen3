@@ -235,7 +235,6 @@ wss.on("connection", function connection(ws, req) {
                 },
               });
               // Handle the case where no member is found
-              console.log(":::::::::::::::::::::::::::::" + member);
               if (member) {
                 bcrypt.compare(
                   jpayload.Password,
@@ -1617,7 +1616,13 @@ wss.on("connection", function connection(ws, req) {
               let p = {
                 cmd: command.GetOverviews,
                 param: {
-                  summary,
+                  Success: true,
+                  totalGateway: summary.totalGateway,
+                  onlineGateway: summary.onlineGateway,
+                  offlineGateway: summary.offlineGateway,
+                  totalDevice: summary.totalDevice,
+                  onlineDevice: summary.onlineDevice,
+                  offlineDevice: summary.offlineDevice,
                 },
               };
               csock.socket.send(JSON.stringify(p));
@@ -1630,7 +1635,7 @@ wss.on("connection", function connection(ws, req) {
               let p = {
                 cmd: command.GetOverviews,
                 param: {
-                  Success: true,
+                  Success: false,
                   Message: "Not site found",
                 },
               };
@@ -2249,7 +2254,7 @@ tcpserver.on("connection", function (sock) {
                                                     let p = {
                                                       MemberID: gwmem.MemberID,
                                                       DeviceID: null,
-                                                      Type: "gateway",
+                                                      Type: "Gateway",
                                                       Status: 1,
                                                     };
                                                     sendToMyFriend(
@@ -3343,7 +3348,7 @@ tcpserver.on("connection", function (sock) {
           let pl = {
             MemberID: sockets[index].info.id,
             DeviceID: null,
-            Type: "gateway",
+            Type: "Gateway",
             Status: 0,
           };
           let getfl = getMyfriendLamp(sockets[index]);
@@ -3838,12 +3843,20 @@ function convert(input) {
 }
 
 function isDuplicateSend(history, payload) {
-  return history.some(
-    (h) =>
-      h.MemberID == payload.MemberID &&
-      h.DeviceID == payload.DeviceID &&
-      h.Status == payload.Status
+  const idx = history.findIndex(
+    (h) => h.MemberID == payload.MemberID && h.DeviceID == payload.DeviceID
   );
+  if (idx !== -1) {
+    if (history[idx].Status == payload.Status) {
+      return true;
+    } else {
+      history[idx].Status = payload.Status;
+      return false;
+    }
+  }
+
+  history.push(payload);
+  return false;
 }
 
 module.exports = app;
